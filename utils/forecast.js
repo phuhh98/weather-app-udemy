@@ -1,21 +1,22 @@
 const request = require('request');
 const chalk = require('chalk');
 
-const forecast = function (longitude, latitude, callback) {
+//destruring longitube and latitude from geoData[0] object;; extract lon and lat then rename them to longitude and latitude
+const forecast = function ({ lon: longitude, lat: latitude }, callback) {
 	// .env is already loaded from the main application;
 	const apiKey = process.env.API_KEY; // Api key for openweathermap.org
 
 	const lang = 'en'; //default return language is english
 	const units = 'metric'; // standard for Kelvin..., metric for Celcius,.. imperial for Ferenheit
 
-	const forecastUrl = `http://api.openweathermap.org/data/2.5/onecall?lon=${longitude}&lat=${latitude}&units=${units}&appid=${apiKey}&lang=${lang}`;
+	const url = `http://api.openweathermap.org/data/2.5/onecall?lon=${longitude}&lat=${latitude}&units=${units}&appid=${apiKey}&lang=${lang}`;
 
 	// make a GET request to weather forecase API then execute callback function on result: callback(error, data)
 	// using error first callback not only for compatible with JS error first style but also easier to convert
 	// to promise in later update
 	request(
 		{
-			url: forecastUrl,
+			url,
 			json: true, // return body type
 		},
 		(error, response) => {

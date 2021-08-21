@@ -15,7 +15,8 @@ geocode(location, (error, geoData) => {
 	if (error) {
 		return console.log('Error: ', error);
 	} else {
-		forecast(geoData[0].lon, geoData[0].lat, (error, forecastData) => {
+		//destruring longitube and latitude from geoData[0] object
+		forecast(geoData[0], (error, forecastData) => {
 			if (error) {
 				return console.log('Error: ', error);
 			} else {

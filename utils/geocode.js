@@ -6,9 +6,9 @@ const geocode = (location, callback) => {
 	const apiKey = process.env.API_KEY; // Api key for openweathermap.org
 	const maxResults = 5; //maximum return search results in the array
 
-	const geocodeService = `http://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(location)}&limit=${maxResults}&appid=${apiKey}`;
+	const url = `http://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(location)}&limit=${maxResults}&appid=${apiKey}`;
 
-	request({ url: geocodeService, json: true }, (err, response) => {
+	request({ url, json: true }, (err, response) => {
 		if (err) {
 			//callback(error,data)
 			//Network error
