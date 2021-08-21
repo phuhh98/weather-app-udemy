@@ -1,15 +1,26 @@
-//udemy su dung darksky api, con minh su dung openweather api cho current weather
+// udemy su dung darksky api, con minh su dung openweather api cho current weather
+// Usage: node ./app.js searchingLocation
+
 require('dotenv').config();
-const request = require('request');
 const geocode = require('./utils/geocode.js');
 const forecast = require('./utils/forecast.js');
 
-geocode('Boston', (err, data) => {
-	console.log('Error: ', err);
-	console.log('Data: ', data);
-});
+const location = process.argv[2];
 
-forecast(-75.7088, 44.1545, (error, data) => {
-	console.log('Error', error);
-	console.log('Data', data);
+if (!location) {
+	return console.log('Please provide a location name as the first argument');
+}
+
+geocode(location, (error, geoData) => {
+	if (error) {
+		return console.log('Error: ', error);
+	} else {
+		forecast(geoData[0].lon, geoData[0].lat, (error, forecastData) => {
+			if (error) {
+				return console.log('Error: ', error);
+			} else {
+				return console.log('Data: ', forecastData);
+			}
+		});
+	}
 });

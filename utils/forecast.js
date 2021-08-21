@@ -1,4 +1,5 @@
 const request = require('request');
+const chalk = require('chalk');
 
 const forecast = function (longitude, latitude, callback) {
 	// .env is already loaded from the main application;
@@ -23,17 +24,18 @@ const forecast = function (longitude, latitude, callback) {
 			} else if (response.body.cod) {
 				callback(`Error: ${response.body.message}`, undefined);
 			} else {
-				callback(undefined, response.body);
-				// const weather = response.body;
-				// const currentTemp = weather.current.temp;
-				// const precipProp = weather.hourly[0].pop * 100;
-				// let weatherStat = weather.current.weather[0].description;
-				// weatherStat = weatherStat[0].toUpperCase() + weatherStat.slice(1); //Upper case the first letter
+				const weather = response.body;
+				const currentTemp = weather.current.temp;
+				const precipProp = weather.hourly[0].pop * 100;
+				let weatherStat = weather.current.weather[0].description;
+				weatherStat = weatherStat[0].toUpperCase() + weatherStat.slice(1); //Upper case the first letter
 
-				// console.log(
-				// 	weatherStat,
-				// 	`.It is currently ${currentTemp} degree out in Ho Chi Minh city. There is ${precipProp}% chance of rain in the next 1 hour`
-				// );
+				callback(
+					undefined,
+					`${weatherStat}. It is currently ${currentTemp} degree out ${chalk.blue(
+						process.argv[2].toLocaleUpperCase()
+					)}. There is ${precipProp}% chance of rain in the next 1 hour`
+				);
 			}
 		}
 	);
